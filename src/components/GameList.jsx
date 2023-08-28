@@ -3,14 +3,15 @@ import './GameList.css';
 import { Card, Col, Row, Spin } from 'antd'; // Import Spin component
 const { Meta } = Card;
 
-const GameList = () => {
+const GameList = ({platform, genre}) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true); // Add loading state
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('https://www.freetogame.com/api/games');
+                const response = await fetch(
+                    `https://www.freetogame.com/api/games?platform=${platform}&category=${genre}`);
                 const jsonData = await response.json();
                 setData(jsonData);
                 setLoading(false); // Set loading state to false after data is fetched
@@ -22,7 +23,7 @@ const GameList = () => {
         }
         fetchData();
 
-    }, []);
+    }, [platform, genre]);
 
     const formatDate = (dateString) => {
         const [year, month, day] = dateString.split('-');

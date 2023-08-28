@@ -21,7 +21,7 @@ function App() {
         "sci-fi", "fighting", "action-rpg", "action", "military", "martial-arts",
         "flight", "low-spec", "tower-defense", "horror", "mmorts"
     ];
-    const platforms = ["pc", "web", "all"];
+    const platforms = ["all", "browser", "pc"];
     const [selectedPlatform, setSelectedPlatform] = useState("all");
     const [selectedGenre, setSelectedGenre] = useState("strategy");
     const handlePlatformChange = value => {
@@ -36,7 +36,7 @@ function App() {
             <Row justify={"center"} align={"middle"} style={{marginTop: 10, marginBottom: 20}}>
                 <Space size={"large"}>
                     <label htmlFor="platformSelect">Платформа:</label>
-                    <Select id="platformSelect" defaultValue={selectedPlatform} onChange={handlePlatformChange}>
+                    <Select popupMatchSelectWidth={false} id="platformSelect" defaultValue={selectedPlatform} onChange={handlePlatformChange}>
                         {platforms.map(platform => (
                             <Option key={platform} value={platform}>
                                 {platform}
@@ -45,7 +45,7 @@ function App() {
                     </Select>
 
                     <label htmlFor="genreSelect">Жанр:</label>
-                    <Select id="genreSelect" defaultValue={selectedGenre} onChange={handleGenreChange}>
+                    <Select popupMatchSelectWidth={false} id="genreSelect" defaultValue={selectedGenre} onChange={handleGenreChange}>
                         {genres.map(genre => (
                             <Option key={genre} value={genre}>
                                 {genre}
@@ -55,8 +55,9 @@ function App() {
                 </Space>
             </Row>
             <Routes>
-                <Route path="/" element={<GameList />} />
-                <Route path="/sss" element={<GameList />} />
+                <Route path="/" element={
+                    <GameList platform={selectedPlatform} genre={selectedGenre} />
+                } />
                 {/*<Route path="/game/:gameId" element={<GameDetails />} />*/}
             </Routes>
         </>
