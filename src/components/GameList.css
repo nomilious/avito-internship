@@ -1,0 +1,10 @@
+/* src/components/GameList.css */
+.game-card {
+    margin-bottom: 20px;
+    padding: 20px;
+    text-align: left;
+}
+#games {
+    margin-left: 10%;
+    margin-right: 10%;
+}
