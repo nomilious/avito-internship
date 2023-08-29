@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { Card, Carousel, Spin, Button, Alert, Col } from 'antd';
+import { Card, Carousel, Spin, Button, Alert, Image } from 'antd';
 import './Game.css';
 import { ArrowLeftOutlined  } from "@ant-design/icons"
 const { Meta } = Card;
@@ -65,7 +65,7 @@ const GameDetails = () => {
     return (
         <div id="game">
             <Card
-                cover={<img src={data.thumbnail} alt={data.title} />} // Added alt attribute
+                cover={<Image preview={false} src={data.thumbnail} alt={data.title} />} // Added alt attribute
                 size="default"
                 extra={
                     <Button icon={<ArrowLeftOutlined />}>
@@ -75,16 +75,17 @@ const GameDetails = () => {
 
                 <Meta title={data.title} description={
                     <>
-                        <p>Дата релиза: {formatDate(data.release_date)}</p>
+                        <p>Платформа: {data.platform}</p>
+                        <p>Жанр: {data.genre}</p>
                         <p>Издатель: {data.publisher}</p>
                         <p>Разработчик: {data.developer}</p>
-                        <p>Жанр: {data.genre}</p>
-
+                        <p>Дата выхода: {formatDate(data.release_date)}</p>
+                        <br/>
                         {/* Add other fields here */}
                         <Carousel autoplay>
                             {data.screenshots.map(screenshot => (
                                 <div key={screenshot.id}>
-                                    <img
+                                    <Image
                                         src={screenshot.image}
                                         alt={`Screenshot ${screenshot.id}`}
                                         style={{ maxWidth: '100%', height: 'auto' }} // Add this style

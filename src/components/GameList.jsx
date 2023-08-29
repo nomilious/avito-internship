@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Col, Row, Spin, Alert } from 'antd'; // Import Spin component
+import {Card, Col, Row, Spin, Alert, Image} from 'antd'; // Import Spin component
 import './Game.css';
 
 const { Meta } = Card;
@@ -56,7 +56,7 @@ const GameList = ({platform, genre, sorting}) => {
                     <Col span={8} key={game.id}>
                         <a href={`/game/${game.id}`}>
                             <Card
-                                cover={<img src={game.thumbnail} alt={game.title} />} // Added alt attribute
+                                cover={<Image preview={false} src={game.thumbnail} alt={game.title} />} // Added alt attribute
                                 hoverable
                                 size="small"
                                 style={{
