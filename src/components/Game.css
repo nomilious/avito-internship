@@ -3,6 +3,13 @@
     margin-right: 10%;
 }
 #game {
-    margin-left: 20%;
-    margin-right: 20%;
+    margin-left: 2%;
+    margin-right: 2%;
+    text-align: justify;
 }
+#game .ant-image{
+    display: block !important;
+}
+/*header {*/
+/*    border-bottom: .1px solid white;*/
+/*}*/

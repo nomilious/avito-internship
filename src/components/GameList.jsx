@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import {Card, Col, Row, Spin, Alert, Image} from 'antd'; // Import Spin component
+import {Card, Col, Row, Spin, Alert, Image, Typography} from 'antd'; // Import Spin component
 import './Game.css';
+import {Link} from "react-router-dom";
 
 const { Meta } = Card;
 
@@ -54,7 +55,7 @@ const GameList = ({platform, genre, sorting}) => {
             <Row gutter={16}>
                 {data.map(game => (
                     <Col span={8} key={game.id}>
-                        <a href={`/game/${game.id}`}>
+                        <Link to={`/game/${game.id}`}>
                             <Card
                                 cover={<Image preview={false} src={game.thumbnail} alt={game.title} />} // Added alt attribute
                                 hoverable
@@ -65,13 +66,13 @@ const GameList = ({platform, genre, sorting}) => {
                             >
                                 <Meta title={game.title} description={
                                     <>
-                                        <p>Дата выпуска: {formatDate(game.release_date)}</p>
-                                        <p>Издатель: {game.publisher}</p>
-                                        <p>Жанр: {game.genre}</p>
+                                        <Typography.Paragraph>Дата выпуска: {formatDate(game.release_date)}</Typography.Paragraph>
+                                        <Typography.Paragraph>Издатель: {game.publisher}</Typography.Paragraph>
+                                        <Typography.Paragraph>Жанр: {game.genre}</Typography.Paragraph>
                                     </>
                                 } />
                             </Card>
-                        </a>
+                        </Link>
                     </Col>
                 ))}
             </Row>

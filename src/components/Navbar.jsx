@@ -10,7 +10,7 @@ function Navbar() {
                 style={{
                     display: 'flex',
                     alignItems: 'center',
-                    backgroundColor: "black"
+                    backgroundColor: "rgb(26 27 30)",
                 }}
             >
                 <Typography.Title style={{color:"white"}}>
