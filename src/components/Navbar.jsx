@@ -14,9 +14,7 @@ function Navbar() {
                 }}
             >
                 <Typography.Title style={{color:"white"}}>
-                    <Link to={"/"}>
-                        Header
-                    </Link>
+                    AvitoTech
                 </Typography.Title>
             </Header>
         </Layout>
