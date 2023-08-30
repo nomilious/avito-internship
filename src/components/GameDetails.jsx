@@ -23,12 +23,30 @@ const GameDetails = () => {
         dispatch(setLoading(true));
         dispatch(setGameDetails({}));
         dispatch(setError(null));
+
+        const storedGameDetails = localStorage.getItem(`gameDetails_${gameId}`)
+        const storedGameDetailsTime = localStorage.getItem(`gameDetailsTime_${gameId}`)
+
+        // if data stored and little time passed
+        if (storedGameDetails && storedGameDetailsTime) {
+            const currTime = new Date().getTime();
+            if (currTime - parseInt(storedGameDetailsTime) < 5 * 60 * 1000){
+                dispatch(setLoading(false));
+                dispatch(setGameDetails(JSON.parse(storedGameDetails)));
+                return
+            }
+        }
+
         // Fetch data
         fetch(`https://www.freetogame.com/api/game?id=${gameId}`)
             .then(response => response.json())
             .then(data=> {
                 dispatch(setGameDetails(data))
                 dispatch(setLoading(false));
+
+                // store data
+                localStorage.setItem(`gameDetails_${gameId}`, JSON.stringify(data))
+                localStorage.setItem(`gameDetailsTime_${gameId}`, new Date().getTime())
             })
             .catch(error=> {
                 console.error('Error fetching game details:', error);
