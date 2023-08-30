@@ -10,7 +10,7 @@ function App() {
 
     return (
         <>
-            <Navbar />
+            <Navbar/>
             <Routes>
                 <Route path="/" element={
                     <>
@@ -18,7 +18,7 @@ function App() {
                         <GameList/>
                     </>
                 } />
-                <Route path="/game/:gameId" element={<GameDetails />} />
+                <Route path="/game/:gameId" element={<GameDetails/>} />
             </Routes>
         </>
     );

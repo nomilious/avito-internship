@@ -78,9 +78,9 @@ const GameList = () => {
 
     return (
         <div id={"games"}>
-            <Row gutter={16}>
+            <Row gutter={{xs: 2, sm: 8, md: 16}}>
                 {gameList.slice(0, visibleItems).map(game => (
-                    <Col span={8} key={game.id}>
+                    <Col xs={24} sm={12} md={8} key={game.id}>
                         <Link to={`/game/${game.id}`}>
                             <Card
                                 cover={<Image preview={false} src={game.thumbnail} alt={game.title} />} // Added alt attribute

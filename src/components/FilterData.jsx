@@ -1,4 +1,4 @@
-import {Row, Select, Space} from "antd";
+import {Row, Select, Space, Col} from "antd";
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedPlatform, setSelectedGenre, setSelectedSorting } from '../reduxStore/actions';
 import React from "react";
@@ -25,49 +25,53 @@ const FilterData = React.memo(() => {
     const sorting = ["relevance", "release-date", "popularity", "alphabetical"];
 
     return (
-        <Row justify={"center"} align={"middle"} style={{marginTop: 10, marginBottom: 20}}>
-            <Space size={"large"}>
-                <label htmlFor="platformSelect">Платформа:</label>
-                <Select
-                    popupMatchSelectWidth={false}
-                    id="platformSelect"
-                    defaultValue={selectedPlatform}
-                    onChange={(value) => dispatch(setSelectedPlatform(value))}
-                >
-                    {platforms.map(platform => (
-                        <Option key={platform} value={platform}>
-                            {platform}
-                        </Option>
-                    ))}
-                </Select>
+        <Row justify={"space-evenly"} align={"middle"} style={{marginTop: 10, marginBottom: 20}}>
+                <Col>
+                    <label htmlFor="platformSelect">Платформа:</label>
+                    <Select
+                        popupMatchSelectWidth={false}
+                        id="platformSelect"
+                        defaultValue={selectedPlatform}
+                        onChange={(value) => dispatch(setSelectedPlatform(value))}
+                    >
+                        {platforms.map(platform => (
+                            <Option key={platform} value={platform}>
+                                {platform}
+                            </Option>
+                        ))}
+                    </Select>
+                </Col>
 
-                <label htmlFor="genreSelect">Жанр:</label>
-                <Select
-                    popupMatchSelectWidth={false}
-                    id="genreSelect"
-                    defaultValue={selectedGenre}
-                    onChange={(value) => dispatch(setSelectedGenre(value)) }
-                >
-                    {genres.map(genre => (
-                        <Option key={genre} value={genre}>
-                            {genre}
-                        </Option>
-                    ))}
-                </Select>
-                <label htmlFor="sortingSelect">Сортировать по:</label>
-                <Select
-                    popupMatchSelectWidth={false}
-                    id="sortingSelect"
-                    defaultValue={selectedSorting}
-                    onChange={(value) => dispatch(setSelectedSorting(value))}
-                >
-                    {sorting.map(sort => (
-                        <Option key={sort} value={sort}>
-                            {sort}
-                        </Option>
-                    ))}
-                </Select>
-            </Space>
+                <Col>
+                    <label htmlFor="genreSelect">Жанр:</label>
+                    <Select
+                        popupMatchSelectWidth={false}
+                        id="genreSelect"
+                        defaultValue={selectedGenre}
+                        onChange={(value) => dispatch(setSelectedGenre(value)) }
+                    >
+                        {genres.map(genre => (
+                            <Option key={genre} value={genre}>
+                                {genre}
+                            </Option>
+                        ))}
+                    </Select>
+                </Col>
+                <Col>
+                    <label htmlFor="sortingSelect">Сортировать по:</label>
+                    <Select
+                        popupMatchSelectWidth={false}
+                        id="sortingSelect"
+                        defaultValue={selectedSorting}
+                        onChange={(value) => dispatch(setSelectedSorting(value))}
+                    >
+                        {sorting.map(sort => (
+                            <Option key={sort} value={sort}>
+                                {sort}
+                            </Option>
+                        ))}
+                    </Select>
+                </Col>
         </Row>
     );
 });
