@@ -1,9 +1,7 @@
-import {Row, Select, Space, Col} from "antd";
+import {Row, Select, Col} from "antd";
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedPlatform, setSelectedGenre, setSelectedSorting } from '../reduxStore/actions';
 import React from "react";
-
-const { Option } = Select;
 
 const FilterData = React.memo(() => {
     const dispatch = useDispatch();
@@ -35,9 +33,9 @@ const FilterData = React.memo(() => {
                         onChange={(value) => dispatch(setSelectedPlatform(value))}
                     >
                         {platforms.map(platform => (
-                            <Option key={platform} value={platform}>
+                            <Select.Option key={platform} value={platform}>
                                 {platform}
-                            </Option>
+                            </Select.Option>
                         ))}
                     </Select>
                 </Col>
@@ -51,9 +49,9 @@ const FilterData = React.memo(() => {
                         onChange={(value) => dispatch(setSelectedGenre(value)) }
                     >
                         {genres.map(genre => (
-                            <Option key={genre} value={genre}>
+                            <Select.Option key={genre} value={genre}>
                                 {genre}
-                            </Option>
+                            </Select.Option>
                         ))}
                     </Select>
                 </Col>
@@ -66,9 +64,9 @@ const FilterData = React.memo(() => {
                         onChange={(value) => dispatch(setSelectedSorting(value))}
                     >
                         {sorting.map(sort => (
-                            <Option key={sort} value={sort}>
+                            <Select.Option key={sort} value={sort}>
                                 {sort}
-                            </Option>
+                            </Select.Option>
                         ))}
                     </Select>
                 </Col>

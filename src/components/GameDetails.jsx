@@ -5,7 +5,6 @@ import { Typography } from 'antd';
 import { ArrowLeftOutlined  } from "@ant-design/icons"
 import { useDispatch, useSelector } from 'react-redux';
 import { setGameDetails, setLoading, setError } from '../reduxStore/actions';
-
 import './Game.css';
 
 const GameDetails = () => {
