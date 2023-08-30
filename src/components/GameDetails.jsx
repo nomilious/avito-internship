@@ -1,42 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Carousel, Spin,Col, Row, Button, Alert, Image, Segmented, Space } from 'antd';
 import { Typography } from 'antd';
 import { ArrowLeftOutlined  } from "@ant-design/icons"
+import { useDispatch, useSelector } from 'react-redux';
+import { setGameDetails, setLoading, setError } from '../reduxStore/actions';
+
 import './Game.css';
 
 const GameDetails = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { gameId } = useParams();
+    const gameDetails = useSelector(state => state.gameDetails);
+    const loading = useSelector(state => state.loading);
+    const error = useSelector(state => state.error);
     const SegmentationOptions = ["Описание", "Галерея", "Системные требования"]
     // const history = useHistory();
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [selectedSegment, setSelectedSegment] = useState(SegmentationOptions[0]);
-
+    const [selectedSegment, setSelectedSegment] = useState(() => SegmentationOptions[0]);
 
     useEffect(() => {
+        dispatch(setLoading(true));
+        dispatch(setGameDetails({}));
+        dispatch(setError(null));
         // Fetch data
-        const fetchData = async () => {
-            try {
-                // Simulate API call delay
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                // Replace with actual API call using gameId
-                const response = await fetch(`https://www.freetogame.com/api/game?id=${gameId}`);
-                const data = await response.json();
-                setData(data); // Assuming the API response structure matches Redux state structure
-                setLoading(false);
-                console.log(gameId);
-            } catch (error) {
+        fetch(`https://www.freetogame.com/api/game?id=${gameId}`)
+            .then(response => response.json())
+            .then(data=> {
+                dispatch(setGameDetails(data))
+                dispatch(setLoading(false));
+            })
+            .catch(error=> {
                 console.error('Error fetching game details:', error);
-                setError(error);
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, [gameId]);
+                dispatch(setError(error));
+                dispatch(setLoading(false));
+            })
+    }, [gameId, dispatch]);
     const formatDate = (dateString) => {
+        if (!dateString) {
+            console.log(dateString)
+            return
+        }
         const [year, month, day] = dateString.split('-');
         return `${day}-${month}-${year}`;
     };
@@ -52,9 +56,6 @@ const GameDetails = () => {
         return map[key];
     };
 
-    const goBack = () => {
-        // history.goBack();
-    };
     if (loading)
         return (
             <div style={{textAlign: "center"}}>
@@ -73,27 +74,27 @@ const GameDetails = () => {
                             style={{marginTop: "10px"}}
                             size={"small"}
                             type={"primary"}
-                            icon={<ArrowLeftOutlined />}>
-                            <Link to="/">
-                                Вернуться к списку
-                            </Link>
+                            icon={<ArrowLeftOutlined />}
+                            onClick={() => navigate("/")}
+                        >
+                            Вернуться к списку
                         </Button>
                         <Image
                             preview={false}
-                            src={data.thumbnail} alt={data.title}
+                            src={gameDetails.thumbnail} alt={gameDetails.title}
                             style={{width:"100%", height:"auto", display: "block" }}
                         />
-                        <Typography.Title level={2}>Название: {data.title}</Typography.Title>
+                        <Typography.Title level={2}>Название: {gameDetails.title}</Typography.Title>
                         <Typography.Paragraph>
-                            {data.short_description}
+                            {gameDetails.short_description}
                         </Typography.Paragraph>
                     </Space>
                 </Col>
                 <Col span={12}>
                     <Segmented
-                        style={{marginTop: "10px"}}
-                        size={"small"}
-                        onChange={(value) => setSelectedSegment(value)}
+                        style={{ marginTop: '10px' }}
+                        size="small"
+                        onChange={value => setSelectedSegment(value)}
                         options={SegmentationOptions}
                     />
                     <br/>
@@ -102,33 +103,33 @@ const GameDetails = () => {
                         <div>
                             <Typography.Paragraph>
                                 <Typography.Text strong={true}>Описание: </Typography.Text>
-                                {data.description}
+                                {gameDetails.description}
                             </Typography.Paragraph>
                             <Typography.Paragraph>
                                 <Typography.Text strong={true}>Платформа: </Typography.Text>
-                                {data.platform}
+                                {gameDetails.platform}
                             </Typography.Paragraph>
                             <Typography.Paragraph>
                                 <Typography.Text strong={true}>Жанр: </Typography.Text>
-                                {data.genre}
+                                {gameDetails.genre}
                             </Typography.Paragraph>
                             <Typography.Paragraph>
                                 <Typography.Text strong={true}>Издатель: </Typography.Text>
-                                {data.publisher}
+                                {gameDetails.publisher}
                             </Typography.Paragraph>
                             <Typography.Paragraph>
                                 <Typography.Text strong={true}>Разработчик: </Typography.Text>
-                                {data.developer}
+                                {gameDetails.developer}
                             </Typography.Paragraph>
                             <Typography.Paragraph>
                                 <Typography.Text strong={true}>Дата выхода: </Typography.Text>
-                                {formatDate(data.release_date)}
+                                {formatDate(gameDetails.release_date)}
                             </Typography.Paragraph>
                         </div>
                     )}
                     {selectedSegment === SegmentationOptions[1] && (
                         <Carousel autoplay>
-                            {data.screenshots.map((screenshot) => (
+                            {gameDetails.screenshots.map((screenshot) => (
                                 <div key={screenshot.id}>
                                     <Image
                                         src={screenshot.image}
@@ -140,12 +141,12 @@ const GameDetails = () => {
                         </Carousel>
                     )}
                     {selectedSegment === SegmentationOptions[2] && (
-                        data.minimum_system_requirements &&
-                        Object.keys(data.minimum_system_requirements).some(
-                            (key) => data.minimum_system_requirements[key]
+                        gameDetails.minimum_system_requirements &&
+                        Object.keys(gameDetails.minimum_system_requirements).some(
+                            (key) => gameDetails.minimum_system_requirements[key]
                         ) && (
                             <>
-                                {Object.entries(data.minimum_system_requirements).map(
+                                {Object.entries(gameDetails.minimum_system_requirements).map(
                                     ([key, value]) => value &&
                                         <Typography.Paragraph key={key}>
                                             <Typography.Text strong={true}>{formatRequirements(key)}: </Typography.Text>

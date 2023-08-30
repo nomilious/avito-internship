@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {Card, Col, Row, Spin, Alert, Image, Typography} from 'antd'; // Import Spin component
-import './Game.css';
 import {Link} from "react-router-dom";
+import { setGameList, setLoading, setError } from '../reduxStore/actions';
+import './Game.css';
 
-const { Meta } = Card;
 
-const GameList = ({platform, genre, sorting}) => {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true); // Add loading state
-    const [error, setError] = useState(null); // State to store error
+const GameList = () => {
+    const dispatch = useDispatch();
+    const itemsPerLoad = 30;
+    const [visibleItems, setVisibleItems] = useState(itemsPerLoad);
+    const gameList = useSelector(state => state.gameList);
+    const loading = useSelector(state => state.loading);
+    const error = useSelector(state => state.error);
+    const platform = useSelector(state => state.selectedPlatform);
+    const genre = useSelector(state => state.selectedGenre);
+    const sorting = useSelector(state => state.selectedSorting);
 
     const buildApiUrl = () => {
         let url = 'https://www.freetogame.com/api/games?';
@@ -18,22 +25,41 @@ const GameList = ({platform, genre, sorting}) => {
 
         return url;
     }
+    // scrollling load u content
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch(buildApiUrl());
-                const jsonData = await response.json();
-                setData(jsonData);
-                setLoading(false); // Set loading state to false after data is fetched
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                setError(error);
-                setLoading(false); // Set loading state to false if there's an error
+        const handleScroll = () => {
+            const isScrolledToBottom =
+                window.innerHeight + window.scrollY >= document.body.offsetHeight;
+
+            if (isScrolledToBottom) {
+                setVisibleItems((prevVisibleItems) => prevVisibleItems + itemsPerLoad);
             }
         };
-        fetchData();
 
-    }, [platform, genre, sorting]);
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [itemsPerLoad]);
+
+    useEffect(() => {
+
+        dispatch(setError(null));
+        dispatch(setLoading(true));
+
+        fetch(buildApiUrl())
+            .then(response => response.json())
+            .then(data => {
+                dispatch(setGameList(data));
+                dispatch(setLoading(false));
+            })
+            .catch(error => {
+                dispatch(setError(error));
+                dispatch(setLoading(false));
+            });
+
+    }, [platform, genre, sorting, dispatch]);
 
     const formatDate = (dateString) => {
         const [year, month, day] = dateString.split('-');
@@ -53,7 +79,7 @@ const GameList = ({platform, genre, sorting}) => {
     return (
         <div id={"games"}>
             <Row gutter={16}>
-                {data.map(game => (
+                {gameList.slice(0, visibleItems).map(game => (
                     <Col span={8} key={game.id}>
                         <Link to={`/game/${game.id}`}>
                             <Card
@@ -64,7 +90,7 @@ const GameList = ({platform, genre, sorting}) => {
                                     marginTop: 10,
                                 }}
                             >
-                                <Meta title={game.title} description={
+                                <Card.Meta title={game.title} description={
                                     <>
                                         <Typography.Paragraph>Дата выпуска: {formatDate(game.release_date)}</Typography.Paragraph>
                                         <Typography.Paragraph>Издатель: {game.publisher}</Typography.Paragraph>

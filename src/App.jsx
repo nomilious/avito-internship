@@ -1,5 +1,4 @@
-// src/App.jsx
-import React, {useState} from 'react';
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import GameList from './components/GameList';
 import GameDetails from './components/GameDetails';
@@ -8,12 +7,6 @@ import Navbar from "./components/Navbar"
 import "./App.css"
 
 function App() {
-    const [selectedPlatform, setSelectedPlatform] = useState("all");
-    const [selectedGenre, setSelectedGenre] = useState("ALL");
-    const [selectedSorting, setSelectedSorting] = useState("relevance");
-    const handlePlatformChange = value => setSelectedPlatform(value);
-    const handleGenreChange = value => setSelectedGenre(value);
-    const handleSortingChange = value => setSelectedSorting(value);
 
     return (
         <>
@@ -21,15 +14,8 @@ function App() {
             <Routes>
                 <Route path="/" element={
                     <>
-                        <FilterData
-                            selectedPlatform={selectedPlatform}
-                            selectedGenre={selectedGenre}
-                            selectedSorting={selectedSorting}
-                            handlePlatformChange={handlePlatformChange}
-                            handleGenreChange={handleGenreChange}
-                            handleSortingChange={handleSortingChange}
-                        />
-                        <GameList platform={selectedPlatform} genre={selectedGenre} sorting={selectedSorting}/>
+                        <FilterData/>
+                        <GameList/>
                     </>
                 } />
                 <Route path="/game/:gameId" element={<GameDetails />} />

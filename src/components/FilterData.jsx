@@ -1,9 +1,16 @@
 import {Row, Select, Space} from "antd";
-import React, {useState} from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { setSelectedPlatform, setSelectedGenre, setSelectedSorting } from '../reduxStore/actions';
+import React from "react";
 
 const { Option } = Select;
 
-function FilterData(props) {
+const FilterData = React.memo(() => {
+    const dispatch = useDispatch();
+    const selectedPlatform = useSelector(state => state.selectedPlatform);
+    const selectedGenre = useSelector(state => state.selectedGenre);
+    const selectedSorting = useSelector(state => state.selectedSorting);
+
     const genres = [
         "ALL",
         "mmorpg", "shooter", "strategy", "moba", "racing", "sports", "social",
@@ -17,14 +24,16 @@ function FilterData(props) {
     const platforms = ["all", "browser", "pc"];
     const sorting = ["relevance", "release-date", "popularity", "alphabetical"];
 
-    const { selectedPlatform, selectedGenre, selectedSorting, handlePlatformChange, handleGenreChange,
-        handleSortingChange } = props;
-
     return (
         <Row justify={"center"} align={"middle"} style={{marginTop: 10, marginBottom: 20}}>
             <Space size={"large"}>
                 <label htmlFor="platformSelect">Платформа:</label>
-                <Select popupMatchSelectWidth={false} id="platformSelect" defaultValue={selectedPlatform} onChange={handlePlatformChange}>
+                <Select
+                    popupMatchSelectWidth={false}
+                    id="platformSelect"
+                    defaultValue={selectedPlatform}
+                    onChange={(value) => dispatch(setSelectedPlatform(value))}
+                >
                     {platforms.map(platform => (
                         <Option key={platform} value={platform}>
                             {platform}
@@ -33,7 +42,12 @@ function FilterData(props) {
                 </Select>
 
                 <label htmlFor="genreSelect">Жанр:</label>
-                <Select popupMatchSelectWidth={false} id="genreSelect" defaultValue={selectedGenre} onChange={handleGenreChange}>
+                <Select
+                    popupMatchSelectWidth={false}
+                    id="genreSelect"
+                    defaultValue={selectedGenre}
+                    onChange={(value) => dispatch(setSelectedGenre(value)) }
+                >
                     {genres.map(genre => (
                         <Option key={genre} value={genre}>
                             {genre}
@@ -41,7 +55,12 @@ function FilterData(props) {
                     ))}
                 </Select>
                 <label htmlFor="sortingSelect">Сортировать по:</label>
-                <Select popupMatchSelectWidth={false} id="sortingSelect" defaultValue={selectedSorting} onChange={handleSortingChange}>
+                <Select
+                    popupMatchSelectWidth={false}
+                    id="sortingSelect"
+                    defaultValue={selectedSorting}
+                    onChange={(value) => dispatch(setSelectedSorting(value))}
+                >
                     {sorting.map(sort => (
                         <Option key={sort} value={sort}>
                             {sort}
@@ -51,5 +70,5 @@ function FilterData(props) {
             </Space>
         </Row>
     );
-}
+});
 export default FilterData;
