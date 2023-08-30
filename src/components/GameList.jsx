@@ -8,7 +8,7 @@ import './Game.css';
 
 const GameList = () => {
     const dispatch = useDispatch();
-    const itemsPerLoad = 30;
+    const itemsPerLoad = 12;
     const [visibleItems, setVisibleItems] = useState(itemsPerLoad);
     const gameList = useSelector(state => state.gameList);
     const loading = useSelector(state => state.loading);
@@ -80,7 +80,7 @@ const GameList = () => {
         <div id={"games"}>
             <Row gutter={{xs: 2, sm: 8, md: 16}}>
                 {gameList.slice(0, visibleItems).map(game => (
-                    <Col xs={24} sm={12} md={8} key={game.id}>
+                    <Col xs={24} sm={12} md={8} lg={8} key={game.id}>
                         <Link to={`/game/${game.id}`}>
                             <Card
                                 cover={<Image preview={false} src={game.thumbnail} alt={game.title} />} // Added alt attribute

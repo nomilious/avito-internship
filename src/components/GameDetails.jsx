@@ -86,7 +86,7 @@ const GameDetails = () => {
     return (
         <div id="game">
             <Row gutter={[{xs: 16, sm: 16, md: 24}, {xs: 32, sm: 32, md: 0}]}>
-                <Col xs={24} sm={24} md={12}>
+                <Col xs={24} sm={24} md={12} lg={12}>
                     <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
                         <Button
                             style={{marginTop: "10px"}}
@@ -108,7 +108,7 @@ const GameDetails = () => {
                         </Typography.Paragraph>
                     </Space>
                 </Col>
-                <Col xs={24} sm={24} md={12}>
+                <Col xs={24} sm={24} md={12} lg={12}>
                     <Segmented
                         style={{ marginTop: '1em' }}
                         size="small"
