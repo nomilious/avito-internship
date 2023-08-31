@@ -1,4 +1,4 @@
-import {Row, Select, Col} from "antd";
+import {Row, Select, ConfigProvider, theme, Form} from "antd";
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedPlatform, setSelectedGenre, setSelectedSorting } from '../reduxStore/actions';
 import React from "react";
@@ -23,12 +23,16 @@ const FilterData = React.memo(() => {
     const sorting = ["relevance", "release-date", "popularity", "alphabetical"];
 
     return (
-        <Row justify={"space-evenly"} align={"middle"} style={{marginTop: 10, marginBottom: 20}}>
-                <Col>
-                    <label htmlFor="platformSelect">Платформа:</label>
+        <ConfigProvider
+            theme={{
+                algorithm: [theme.darkAlgorithm, theme.compactAlgorithm],
+            }}
+            >
+        <Row justify={"center"}  style={{marginTop: 10, marginBottom: 20}}>
+            <Form layout="inline" size="middle">
+                <Form.Item label={"Платформа"}>
                     <Select
                         popupMatchSelectWidth={false}
-                        id="platformSelect"
                         defaultValue={selectedPlatform}
                         onChange={(value) => dispatch(setSelectedPlatform(value))}
                     >
@@ -38,13 +42,10 @@ const FilterData = React.memo(() => {
                             </Select.Option>
                         ))}
                     </Select>
-                </Col>
-
-                <Col>
-                    <label htmlFor="genreSelect">Жанр:</label>
+                </Form.Item>
+                <Form.Item label={"Жанр"}>
                     <Select
                         popupMatchSelectWidth={false}
-                        id="genreSelect"
                         defaultValue={selectedGenre}
                         onChange={(value) => dispatch(setSelectedGenre(value)) }
                     >
@@ -54,12 +55,10 @@ const FilterData = React.memo(() => {
                             </Select.Option>
                         ))}
                     </Select>
-                </Col>
-                <Col>
-                    <label htmlFor="sortingSelect">Сортировать по:</label>
+                </Form.Item>
+                <Form.Item label={"Сортировать"}>
                     <Select
                         popupMatchSelectWidth={false}
-                        id="sortingSelect"
                         defaultValue={selectedSorting}
                         onChange={(value) => dispatch(setSelectedSorting(value))}
                     >
@@ -69,8 +68,10 @@ const FilterData = React.memo(() => {
                             </Select.Option>
                         ))}
                     </Select>
-                </Col>
+                </Form.Item>
+            </Form>
         </Row>
+        </ConfigProvider>
     );
 });
 export default FilterData;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {Card, Col, Row, Spin, Alert, Image, Typography} from 'antd'; // Import Spin component
+import {Card, Col, Row, Spin, Alert, Image, Typography, theme, ConfigProvider} from 'antd'; // Import Spin component
 import {Link} from "react-router-dom";
 import { setGameList, setLoading, setError } from '../reduxStore/actions';
 import './Game.css';
@@ -75,8 +75,14 @@ const GameList = () => {
     if (error)
         return <Alert type="error" showIcon message="Error" description={`Error: ${error}`}/>;
 
-
     return (
+        <ConfigProvider
+            theme={{
+                algorithm: [theme.darkAlgorithm, theme.compactAlgorithm],
+
+
+            }}
+        >
         <div id={"games"}>
             <Row gutter={[{xs: 2, sm: 8, md: 16}, {xs: 2, sm: 8, md: 16}]}>
                 {gameList.slice(0, visibleItems).map(game => (
@@ -87,7 +93,11 @@ const GameList = () => {
                                 hoverable
                                 size="small"
                             >
-                                <Card.Meta title={game.title} description={
+                                <Card.Meta title={
+                                    <Typography.Title level={2}>
+                                        {game.title}
+                                    </Typography.Title>
+                                } description={
                                     <>
                                         <Typography.Paragraph>Дата выпуска: {formatDate(game.release_date)}</Typography.Paragraph>
                                         <Typography.Paragraph>Издатель: {game.publisher}</Typography.Paragraph>
@@ -101,6 +111,7 @@ const GameList = () => {
             </Row>
 
         </div>
+        </ConfigProvider>
     );
 };
 

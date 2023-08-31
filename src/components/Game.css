@@ -16,6 +16,9 @@
     padding-left: 12px;
     margin: 16px 0;
 }
-body *{
+body {
+    background-color: #2C2C32;
+}
+body, body* {
     font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif !important;
 }

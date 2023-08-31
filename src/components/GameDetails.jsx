@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Carousel, Spin,Col, Row, Button, Alert, Image, Segmented, Space } from 'antd';
-import { Typography } from 'antd';
+import {Carousel, Spin, Col, Row, Button, Alert, Image, Segmented, Space, theme} from 'antd';
+import { Typography, ConfigProvider } from 'antd';
 import { ArrowLeftOutlined  } from "@ant-design/icons"
 import { useDispatch, useSelector } from 'react-redux';
 import { setGameDetails, setLoading, setError } from '../reduxStore/actions';
@@ -83,6 +83,12 @@ const GameDetails = () => {
         return <Alert type="error" showIcon message="Error" description={`Error: ${error}`}/>;
 
     return (
+        <ConfigProvider
+            theme={{
+                algorithm: [theme.darkAlgorithm, theme.compactAlgorithm],
+
+            }}
+        >
         <div id="game">
             <Row gutter={[{xs: 16, sm: 16, md: 24}, {xs: 32, sm: 32, md: 0}]}>
                 <Col xs={24} sm={24} md={12} lg={12}>
@@ -185,6 +191,7 @@ const GameDetails = () => {
                 </Col>
             </Row>
         </div>
+        </ConfigProvider>
     );
 };
 
