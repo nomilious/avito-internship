@@ -1,5 +1,4 @@
 import {Layout, Typography} from "antd";
-import {Link} from "react-router-dom";
 
 const {Header} = Layout;
 

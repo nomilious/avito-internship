@@ -88,7 +88,7 @@ const GameDetails = () => {
                 <Col xs={24} sm={24} md={12} lg={12}>
                     <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
                         <Button
-                            style={{marginTop: "10px"}}
+                            style={{marginTop: "1em"}}
                             size={"small"}
                             type={"primary"}
                             icon={<ArrowLeftOutlined />}
@@ -101,10 +101,12 @@ const GameDetails = () => {
                             src={gameDetails.thumbnail} alt={gameDetails.title}
                             style={{width:"100%", height:"auto", display: "block" }}
                         />
-                        <Typography.Title level={2}>Название: {gameDetails.title}</Typography.Title>
-                        <Typography.Paragraph>
-                            {gameDetails.short_description}
-                        </Typography.Paragraph>
+                        <Typography.Title level={3}>Название: {gameDetails.title}</Typography.Title>
+                        <blockquote className="minimal-quote">
+                            <Typography.Paragraph>
+                                {gameDetails.short_description}
+                            </Typography.Paragraph>
+                        </blockquote>
                     </Space>
                 </Col>
                 <Col xs={24} sm={24} md={12} lg={12}>
@@ -157,10 +159,12 @@ const GameDetails = () => {
                             ))}
                         </Carousel>
                     )}
+                    {/*display either gameDetails.minimum_system_requirements or "No Data" */}
                     {selectedSegment === SegmentationOptions[2] && (
                         gameDetails.minimum_system_requirements &&
                         Object.keys(gameDetails.minimum_system_requirements).some(
                             (key) => gameDetails.minimum_system_requirements[key]
+                            // eslint-disable-next-line no-mixed-operators
                         ) && (
                             <>
                                 {Object.entries(gameDetails.minimum_system_requirements).map(
@@ -170,6 +174,11 @@ const GameDetails = () => {
                                             {value}
                                         </Typography.Paragraph>
                                 )}
+                            </>
+                            // eslint-disable-next-line no-mixed-operators
+                        ) || (
+                            <>
+                                <Typography.Paragraph>Нет данных </Typography.Paragraph>
                             </>
                         )
                     )}

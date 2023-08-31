@@ -58,7 +58,7 @@ const GameList = () => {
                 dispatch(setError(error));
                 dispatch(setLoading(false));
             });
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [platform, genre, sorting, dispatch]);
 
     const formatDate = (dateString) => {
@@ -78,7 +78,7 @@ const GameList = () => {
 
     return (
         <div id={"games"}>
-            <Row gutter={{xs: 2, sm: 8, md: 16}}>
+            <Row gutter={[{xs: 2, sm: 8, md: 16}, {xs: 2, sm: 8, md: 16}]}>
                 {gameList.slice(0, visibleItems).map(game => (
                     <Col xs={24} sm={12} md={8} lg={8} key={game.id}>
                         <Link to={`/game/${game.id}`}>
@@ -86,9 +86,6 @@ const GameList = () => {
                                 cover={<Image preview={false} src={game.thumbnail} alt={game.title} />} // Added alt attribute
                                 hoverable
                                 size="small"
-                                style={{
-                                    marginTop: 10,
-                                }}
                             >
                                 <Card.Meta title={game.title} description={
                                     <>
